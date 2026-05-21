@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Argent Capital — Investor CRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+<style>
+/* ── RESET & TOKENS ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:         #0c0e12;
+  --bg1:        #12151b;
+  --bg2:        #181c24;
+  --bg3:        #1e2330;
+  --border:     rgba(255,255,255,0.07);
+  --border2:    rgba(255,255,255,0.12);
+  --text:       #e8eaf0;
+  --text2:      #8b919e;
+  --text3:      #555d6e;
+  --accent:     #3b82f6;
+  --accent-lt:  rgba(59,130,246,0.12);
+  --accent-glow:rgba(59,130,246,0.25);
+  --green:      #10b981;
+  --green-lt:   rgba(16,185,129,0.12);
+  --red:        #ef4444;
+  --red-lt:     rgba(239,68,68,0.12);
+  --amber:      #f59e0b;
+  --amber-lt:   rgba(245,158,11,0.12);
+  --purple:     #8b5cf6;
+  --purple-lt:  rgba(139,92,246,0.12);
+  --font:       'DM Sans', sans-serif;
+  --mono:       'DM Mono', monospace;
+  --radius:     8px;
+  --radius-lg:  12px;
+  --sidebar-w:  220px;
+  --header-h:   56px;
+  --trans:      0.18s ease;
+}
+[data-theme="light"] {
+  --bg:         #f4f5f8;
+  --bg1:        #ffffff;
+  --bg2:        #f0f1f5;
+  --bg3:        #e8eaef;
+  --border:     rgba(0,0,0,0.07);
+  --border2:    rgba(0,0,0,0.12);
+  --text:       #111827;
+  --text2:      #4b5563;
+  --text3:      #9ca3af;
+  --accent:     #2563eb;
+  --accent-lt:  rgba(37,99,235,0.08);
+  --accent-glow:rgba(37,99,235,0.15);
+  --green-lt:   rgba(16,185,129,0.08);
+  --red-lt:     rgba(239,68,68,0.08);
+  --amber-lt:   rgba(245,158,11,0.08);
+  --purple-lt:  rgba(139,92,246,0.08);
+}
+
+html, body { height: 100%; font-family: var(--font); background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+
+/* ── SCROLLBAR ───────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 99px; }
+
+/* ── LAYOUT ──────────────────────────────────────────────────── */
+.shell { display: flex; height: 100vh; overflow: hidden; }
+
+/* ── SIDEBAR ─────────────────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg1);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  z-index: 10;
+}
+.logo {
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.logo-mark {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  background: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600; color: #fff;
+  letter-spacing: -0.5px;
+  flex-shrink: 0;
+}
+.logo-text { font-size: 14px; font-weight: 600; color: var(--text); letter-spacing: -0.3px; }
+.logo-sub  { font-size: 10px; color: var(--text3); letter-spacing: 0.05em; text-transform: uppercase; margin-top: -2px; }
+
+.nav { flex: 1; overflow-y: auto; padding: 12px 10px; }
+.nav-section {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 8px 8px 4px;
+  margin-top: 4px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  color: var(--text2);
+  cursor: pointer;
+  transition: background var(--trans), color var(--trans);
+  font-size: 13px;
+  font-weight: 400;
+  user-select: none;
+  margin-bottom: 1px;
+}
+.nav-item i { font-size: 16px; flex-shrink: 0; }
+.nav-item:hover { background: var(--bg2); color: var(--text); }
+.nav-item.active { background: var(--accent-lt); color: var(--accent); font-weight: 500; }
+.nav-item.active i { color: var(--accent); }
+.nav-badge {
+  margin-left: auto;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 99px;
+  line-height: 1.6;
+}
+.nav-badge.amber { background: var(--amber); }
+.sidebar-footer {
+  padding: 12px 10px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.user-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background var(--trans);
+}
+.user-row:hover { background: var(--bg2); }
+.avatar {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600;
+  flex-shrink: 0;
+}
+.av-blue   { background: var(--accent-lt); color: var(--accent); }
+.av-green  { background: var(--green-lt);  color: var(--green); }
+.av-purple { background: var(--purple-lt); color: var(--purple); }
+.av-amber  { background: var(--amber-lt);  color: var(--amber); }
+.av-red    { background: var(--red-lt);    color: var(--red); }
+.av-teal   { background: rgba(6,182,212,0.12); color: #06b6d4; }
+.user-name  { font-size: 12px; font-weight: 500; color: var(--text); }
+.user-role  { font-size: 11px; color: var(--text3); }
+.theme-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text3);
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px;
+  border-radius: var(--radius);
+  transition: color var(--trans), background var(--trans);
+}
+.theme-btn:hover { color: var(--text); background: var(--bg2); }
+
+/* ── MAIN ────────────────────────────────────────────────────── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
+
+/* ── TOPBAR ──────────────────────────────────────────────────── */
+.topbar {
+  height: var(--header-h);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 24px;
+  flex-shrink: 0;
+  background: var(--bg1);
+}
+.page-title { font-size: 15px; font-weight: 600; color: var(--text); flex: 1; letter-spacing: -0.3px; }
+.page-subtitle { font-size: 12px; color: var(--text3); font-weight: 400; margin-left: 8px; }
+.topbar-actions { display: flex; align-items: center; gap: 8px; }
+
+.search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0 10px;
+  height: 34px;
+  transition: border-color var(--trans), box-shadow var(--trans);
+}
+.search-wrap:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.search-wrap i { font-size: 14px; color: var(--text3); }
+.search-wrap input {
+  background: none; border: none; outline: none;
+  font-size: 13px; color: var(--text);
+  font-family: var(--font);
+  width: 180px;
+}
+.search-wrap input::placeholder { color: var(--text3); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  height: 34px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--trans);
+  white-space: nowrap;
+  font-family: var(--font);
+}
+.btn-ghost {
+  background: none;
+  border: 1px solid var(--border2);
+  color: var(--text2);
+}
+.btn-ghost:hover { background: var(--bg2); color: var(--text); border-color: var(--border2); }
+.btn-primary {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: #fff;
+}
+.btn-primary:hover { filter: brightness(1.1); }
+.btn i { font-size: 15px; }
+
+/* ── CONTENT AREA ────────────────────────────────────────────── */
+.content { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+
+/* ── VIEWS ───────────────────────────────────────────────────── */
+.view { display: none; flex-direction: column; gap: 20px; animation: fadeUp 0.25s ease; }
+.view.active { display: flex; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── KPI CARDS ───────────────────────────────────────────────── */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.kpi-card {
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--trans);
+}
+.kpi-card:hover { border-color: var(--border2); }
+.kpi-icon {
+  width: 34px; height: 34px;
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px;
+  margin-bottom: 14px;
+}
+.kpi-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; margin-bottom: 5px; }
+.kpi-value { font-size: 26px; font-weight: 600; color: var(--text); letter-spacing: -0.8px; font-variant-numeric: tabular-nums; }
+.kpi-delta { display: flex; align-items: center; gap: 4px; font-size: 12px; margin-top: 6px; }
+.kpi-delta.up { color: var(--green); }
+.kpi-delta.dn { color: var(--red); }
+.kpi-delta.neutral { color: var(--text3); }
+.kpi-delta i { font-size: 13px; }
+
+/* ── CARD COMPONENT ──────────────────────────────────────────── */
+.card {
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.card-title { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; letter-spacing: -0.2px; }
+.card-body { padding: 16px 18px; }
+
+/* ── TABLE ───────────────────────────────────────────────────── */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  padding: 9px 14px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+  white-space: nowrap;
+}
+thead th:first-child { border-radius: 0; }
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background var(--trans);
+}
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--bg2); }
+tbody td { padding: 11px 14px; font-size: 13px; color: var(--text); white-space: nowrap; }
+tbody td.muted { color: var(--text2); }
+tbody td.mono  { font-family: var(--mono); font-size: 12px; color: var(--text2); }
+
+/* ── BADGES ──────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.badge-green  { background: var(--green-lt);  color: var(--green); }
+.badge-blue   { background: var(--accent-lt); color: var(--accent); }
+.badge-red    { background: var(--red-lt);    color: var(--red); }
+.badge-amber  { background: var(--amber-lt);  color: var(--amber); }
+.badge-purple { background: var(--purple-lt); color: var(--purple); }
+.badge-gray   { background: var(--bg3);       color: var(--text2); }
+.badge-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+/* ── LP NAME CELL ────────────────────────────────────────────── */
+.lp-cell { display: flex; align-items: center; gap: 10px; }
+.lp-info .lp-name  { font-size: 13px; font-weight: 500; color: var(--text); }
+.lp-info .lp-sub   { font-size: 11px; color: var(--text3); margin-top: 1px; }
+
+/* ── TWO-COL LAYOUT ──────────────────────────────────────────── */
+.two-col { display: grid; grid-template-columns: 1fr 320px; gap: 16px; align-items: start; }
+.right-col { display: flex; flex-direction: column; gap: 16px; }
+
+/* ── PIPELINE BARS ───────────────────────────────────────────── */
+.pipeline-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.pipeline-row:last-child { border-bottom: none; }
+.pl-name { font-size: 12px; color: var(--text); min-width: 110px; font-weight: 500; }
+.pl-bar-bg { flex: 1; height: 5px; background: var(--bg3); border-radius: 99px; overflow: hidden; }
+.pl-bar-fill { height: 100%; border-radius: 99px; background: var(--accent); transition: width 0.8s cubic-bezier(0.25,1,0.5,1); }
+.pl-amount { font-size: 11px; color: var(--text2); min-width: 50px; text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono); }
+
+/* ── ACTIVITY FEED ───────────────────────────────────────────── */
+.act-item { display: flex; gap: 11px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.act-item:last-child { border-bottom: none; }
+.act-icon {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  color: var(--text2);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.act-body .act-text { font-size: 12px; color: var(--text); line-height: 1.5; }
+.act-body .act-text strong { font-weight: 600; color: var(--text); }
+.act-body .act-time { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+/* ── FUND CARDS (Fund view) ──────────────────────────────────── */
+.fund-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.fund-card {
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  transition: border-color var(--trans);
+}
+.fund-card:hover { border-color: var(--border2); }
+.fund-name { font-size: 16px; font-weight: 600; color: var(--text); letter-spacing: -0.4px; margin-bottom: 3px; }
+.fund-strat { font-size: 12px; color: var(--text3); margin-bottom: 16px; }
+.fund-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+.fund-stat-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
+.fund-stat-val { font-size: 16px; font-weight: 600; color: var(--text); letter-spacing: -0.4px; }
+.progress-bar { height: 4px; background: var(--bg3); border-radius: 99px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 99px; background: var(--accent); }
+.progress-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); margin-top: 5px; }
+
+/* ── INTERACTIONS TABLE ──────────────────────────────────────── */
+.log-type-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+
+/* ── DETAIL PANEL (slide-in) ─────────────────────────────────── */
+.detail-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 100;
+  backdrop-filter: blur(2px);
+}
+.detail-overlay.open { display: flex; justify-content: flex-end; }
+.detail-panel {
+  width: 480px;
+  background: var(--bg1);
+  height: 100%;
+  border-left: 1px solid var(--border2);
+  display: flex;
+  flex-direction: column;
+  animation: slideIn 0.25s ease;
+  overflow-y: auto;
+}
+@keyframes slideIn {
+  from { transform: translateX(40px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+.detail-head {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.detail-close {
+  margin-left: auto;
+  background: none;
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  border-radius: var(--radius);
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all var(--trans);
+  flex-shrink: 0;
+}
+.detail-close:hover { background: var(--bg2); color: var(--text); }
+.detail-name { font-size: 17px; font-weight: 600; color: var(--text); letter-spacing: -0.4px; }
+.detail-role { font-size: 12px; color: var(--text3); margin-top: 2px; }
+.detail-body { padding: 20px 24px; flex: 1; }
+.detail-section-title { font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+.detail-field-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
+.detail-field-val   { font-size: 13px; color: var(--text); font-weight: 500; }
+.detail-log-item { display: flex; gap: 11px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.detail-log-item:last-child { border-bottom: none; }
+.log-icon { width: 28px; height: 28px; border-radius: 50%; background: var(--bg2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--text2); flex-shrink: 0; }
+.log-note { font-size: 12px; color: var(--text); line-height: 1.5; }
+.log-meta { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+/* ── MODAL (Add LP) ──────────────────────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(3px);
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg1);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: popIn 0.2s ease;
+}
+@keyframes popIn {
+  from { transform: scale(0.96); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+.modal-head {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.modal-title { font-size: 15px; font-weight: 600; color: var(--text); flex: 1; }
+.modal-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group.full { grid-column: 1 / -1; }
+.form-label { font-size: 11px; font-weight: 500; color: var(--text2); text-transform: uppercase; letter-spacing: 0.07em; }
+.form-input, .form-select {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 11px;
+  font-size: 13px;
+  color: var(--text);
+  font-family: var(--font);
+  outline: none;
+  transition: border-color var(--trans), box-shadow var(--trans);
+  width: 100%;
+}
+.form-input:focus, .form-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.form-select option { background: var(--bg1); }
+.modal-foot {
+  padding: 14px 24px 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── TOAST ───────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  background: var(--bg1);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-lg);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text);
+  z-index: 999;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  transform: translateY(80px);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.25,1,0.5,1);
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast i { font-size: 17px; color: var(--green); }
+
+/* ── TABS (inside card) ──────────────────────────────────────── */
+.tab-row { display: flex; gap: 2px; }
+.tab-btn {
+  padding: 5px 12px;
+  border-radius: var(--radius);
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--text2);
+  background: none;
+  border: none;
+  font-family: var(--font);
+  transition: all var(--trans);
+}
+.tab-btn:hover { color: var(--text); background: var(--bg2); }
+.tab-btn.active { background: var(--bg3); color: var(--text); font-weight: 500; }
+
+/* ── SORT INDICATOR ──────────────────────────────────────────── */
+th.sortable { cursor: pointer; }
+th.sortable:hover { color: var(--text2); }
+.sort-icon { font-size: 10px; margin-left: 3px; opacity: 0.5; }
+
+/* ── DIVIDER ─────────────────────────────────────────────────── */
+.divider { height: 1px; background: var(--border); margin: 0 -24px; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-mark">AC</div>
+      <div>
+        <div class="logo-text">Argent Capital</div>
+        <div class="logo-sub">Investor CRM</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <div class="nav-section">Investors</div>
+      <div class="nav-item active" onclick="navigate('lps', this)">
+        <i class="ti ti-users"></i> LP Directory
+      </div>
+      <div class="nav-item" onclick="navigate('pipeline', this)">
+        <i class="ti ti-chart-bar-off"></i> Pipeline
+        <span class="nav-badge">7</span>
+      </div>
+      <div class="nav-item" onclick="navigate('interactions', this)">
+        <i class="ti ti-messages"></i> Interactions
+        <span class="nav-badge amber">3</span>
+      </div>
+
+      <div class="nav-section">Funds</div>
+      <div class="nav-item" onclick="navigate('funds', this)">
+        <i class="ti ti-briefcase"></i> Fund Overview
+      </div>
+      <div class="nav-item" onclick="navigate('documents', this)">
+        <i class="ti ti-file-text"></i> Documents
+      </div>
+
+      <div class="nav-section">Operations</div>
+      <div class="nav-item" onclick="navigate('roadshows', this)">
+        <i class="ti ti-plane"></i> Roadshows
+      </div>
+      <div class="nav-item" onclick="navigate('reporting', this)">
+        <i class="ti ti-report-analytics"></i> Reporting
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-row">
+        <div class="avatar av-blue">NK</div>
+        <div>
+          <div class="user-name">Netanel K.</div>
+          <div class="user-role">IR Manager</div>
+        </div>
+        <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">
+          <i class="ti ti-sun" id="theme-icon"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════ MAIN ═══════════════════════ -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <span class="page-title" id="page-title">LP Directory</span>
+        <span class="page-subtitle" id="page-subtitle">127 investors · $4.2B AUM</span>
+      </div>
+      <div class="topbar-actions">
+        <div class="search-wrap">
+          <i class="ti ti-search"></i>
+          <input type="text" id="global-search" placeholder="Search investors…" oninput="handleSearch(this.value)" />
+        </div>
+        <button class="btn btn-ghost" onclick="exportCSV()">
+          <i class="ti ti-download"></i> Export
+        </button>
+        <button class="btn btn-primary" onclick="openAddLP()">
+          <i class="ti ti-plus"></i> Add LP
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- ══════ VIEW: LP DIRECTORY ══════ -->
+      <div class="view active" id="view-lps">
+
+        <!-- KPIs -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--accent-lt); color:var(--accent);">
+              <i class="ti ti-building-bank"></i>
+            </div>
+            <div class="kpi-label">Total AUM</div>
+            <div class="kpi-value">$4.2B</div>
+            <div class="kpi-delta up"><i class="ti ti-trending-up"></i> +8.3% YTD</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--green-lt); color:var(--green);">
+              <i class="ti ti-users"></i>
+            </div>
+            <div class="kpi-label">Active LPs</div>
+            <div class="kpi-value">127</div>
+            <div class="kpi-delta up"><i class="ti ti-trending-up"></i> +12 this quarter</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--amber-lt); color:var(--amber);">
+              <i class="ti ti-target"></i>
+            </div>
+            <div class="kpi-label">Pipeline Value</div>
+            <div class="kpi-value">$890M</div>
+            <div class="kpi-delta neutral"><i class="ti ti-clock"></i> 7 prospects</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--purple-lt); color:var(--purple);">
+              <i class="ti ti-chart-pie-2"></i>
+            </div>
+            <div class="kpi-label">Avg. Commitment</div>
+            <div class="kpi-value">$33M</div>
+            <div class="kpi-delta dn"><i class="ti ti-trending-down"></i> −2.1% vs last yr</div>
+          </div>
+        </div>
+
+        <!-- Table + Right Panel -->
+        <div class="two-col">
+
+          <!-- LP TABLE -->
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">Investor Roster</span>
+              <div class="tab-row" id="lp-filter-tabs">
+                <button class="tab-btn active" onclick="filterStatus('all', this)">All</button>
+                <button class="tab-btn" onclick="filterStatus('Active', this)">Active</button>
+                <button class="tab-btn" onclick="filterStatus('Prospect', this)">Prospects</button>
+                <button class="tab-btn" onclick="filterStatus('Soft Circle', this)">Soft Circle</button>
+                <button class="tab-btn" onclick="filterStatus('Inactive', this)">Inactive</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Investor</th>
+                    <th class="sortable" onclick="sortTable('type')">Type <span class="sort-icon">↕</span></th>
+                    <th class="sortable" onclick="sortTable('aum')">Commitment <span class="sort-icon">↕</span></th>
+                    <th class="sortable" onclick="sortTable('status')">Status <span class="sort-icon">↕</span></th>
+                    <th>Geography</th>
+                    <th>Last Contact</th>
+                    <th>Tier</th>
+                  </tr>
+                </thead>
+                <tbody id="lp-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- RIGHT PANEL -->
+          <div class="right-col">
+
+            <!-- Pipeline -->
+            <div class="card">
+              <div class="card-head">
+                <span class="card-title">Capital Pipeline</span>
+                <span class="badge badge-blue">$890M</span>
+              </div>
+              <div class="card-body" style="padding-top:8px; padding-bottom:8px;">
+                <div class="pipeline-row">
+                  <span class="pl-name">Soft Circle</span>
+                  <div class="pl-bar-bg"><div class="pl-bar-fill" style="width:85%"></div></div>
+                  <span class="pl-amount">$310M</span>
+                </div>
+                <div class="pipeline-row">
+                  <span class="pl-name">Due Diligence</span>
+                  <div class="pl-bar-bg"><div class="pl-bar-fill" style="width:55%;background:var(--amber)"></div></div>
+                  <span class="pl-amount">$200M</span>
+                </div>
+                <div class="pipeline-row">
+                  <span class="pl-name">First Meeting</span>
+                  <div class="pl-bar-bg"><div class="pl-bar-fill" style="width:38%;background:var(--purple)"></div></div>
+                  <span class="pl-amount">$230M</span>
+                </div>
+                <div class="pipeline-row">
+                  <span class="pl-name">Initial Intro</span>
+                  <div class="pl-bar-bg"><div class="pl-bar-fill" style="width:25%;background:var(--text3)"></div></div>
+                  <span class="pl-amount">$150M</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card">
+              <div class="card-head">
+                <span class="card-title">Recent Activity</span>
+                <button class="btn btn-ghost" style="height:28px; font-size:11px; padding:0 10px;" onclick="navigate('interactions', document.querySelector('.nav-item:nth-child(3)'))">View all</button>
+              </div>
+              <div class="card-body" style="padding-top:6px; padding-bottom:6px;">
+                <div class="act-item">
+                  <div class="act-icon"><i class="ti ti-phone"></i></div>
+                  <div class="act-body">
+                    <div class="act-text">Call with <strong>Ontario Teachers'</strong> — Q3 LP update</div>
+                    <div class="act-time">Today, 10:30 AM</div>
+                  </div>
+                </div>
+                <div class="act-item">
+                  <div class="act-icon"><i class="ti ti-mail"></i></div>
+                  <div class="act-body">
+                    <div class="act-text">Sent DDQ to <strong>Abu Dhabi Investment Authority</strong></div>
+                    <div class="act-time">Yesterday, 3:15 PM</div>
+                  </div>
+                </div>
+                <div class="act-item">
+                  <div class="act-icon"><i class="ti ti-building"></i></div>
+                  <div class="act-body">
+                    <div class="act-text">On-site meeting — <strong>CalPERS</strong> IR team, Sacramento</div>
+                    <div class="act-time">May 10</div>
+                  </div>
+                </div>
+                <div class="act-item">
+                  <div class="act-icon"><i class="ti ti-chart-bar"></i></div>
+                  <div class="act-body">
+                    <div class="act-text">Soft circle updated — <strong>Yale Endowment</strong> $50M indication</div>
+                    <div class="act-time">May 9</div>
+                  </div>
+                </div>
+                <div class="act-item">
+                  <div class="act-icon"><i class="ti ti-file-description"></i></div>
+                  <div class="act-body">
+                    <div class="act-text">Subscription docs executed — <strong>GIC Singapore</strong></div>
+                    <div class="act-time">May 8</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ VIEW: PIPELINE ══════ -->
+      <div class="view" id="view-pipeline">
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--accent-lt);color:var(--accent);"><i class="ti ti-target"></i></div>
+            <div class="kpi-label">Total Pipeline</div>
+            <div class="kpi-value">$890M</div>
+            <div class="kpi-delta neutral">7 active prospects</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--green-lt);color:var(--green);"><i class="ti ti-circle-check"></i></div>
+            <div class="kpi-label">Soft Circles</div>
+            <div class="kpi-value">$310M</div>
+            <div class="kpi-delta up"><i class="ti ti-trending-up"></i> 3 investors</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--amber-lt);color:var(--amber);"><i class="ti ti-clock"></i></div>
+            <div class="kpi-label">In Due Diligence</div>
+            <div class="kpi-value">$200M</div>
+            <div class="kpi-delta neutral">2 pending</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--purple-lt);color:var(--purple);"><i class="ti ti-percentage"></i></div>
+            <div class="kpi-label">Close Rate (TTM)</div>
+            <div class="kpi-value">41%</div>
+            <div class="kpi-delta up"><i class="ti ti-trending-up"></i> +6pp YoY</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Fundraising Pipeline</span>
+            <button class="btn btn-ghost" style="height:28px;font-size:11px;padding:0 10px;">Filter</button>
+            <button class="btn btn-primary" style="height:28px;font-size:11px;padding:0 10px;" onclick="showToast('New prospect added')"><i class="ti ti-plus"></i> Add Prospect</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Prospect</th>
+                  <th>Stage</th>
+                  <th>Target</th>
+                  <th>Probability</th>
+                  <th>Expected Close</th>
+                  <th>IR Owner</th>
+                  <th>Next Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><div class="lp-cell"><div class="avatar av-green" style="width:28px;height:28px;font-size:10px;">MF</div><div class="lp-info"><div class="lp-name">Maple Future Fund</div><div class="lp-sub">Canada · Pension</div></div></div></td><td><span class="badge badge-green"><span class="badge-dot"></span>Soft Circle</span></td><td class="mono">$150M</td><td><span style="color:var(--green);font-weight:600;">75%</span></td><td class="muted">Jun 3, 2025</td><td class="muted">NK</td><td class="muted">Term sheet review</td></tr>
+                <tr><td><div class="lp-cell"><div class="avatar av-blue" style="width:28px;height:28px;font-size:10px;">NZ</div><div class="lp-info"><div class="lp-name">NZ Superannuation</div><div class="lp-sub">New Zealand · SWF</div></div></div></td><td><span class="badge badge-amber"><span class="badge-dot"></span>Due Diligence</span></td><td class="mono">$100M</td><td style="color:var(--amber);font-weight:600;">55%</td><td class="muted">Jun 10, 2025</td><td class="muted">NK</td><td class="muted">IC meeting scheduled</td></tr>
+                <tr><td><div class="lp-cell"><div class="avatar av-purple" style="width:28px;height:28px;font-size:10px;">KI</div><div class="lp-info"><div class="lp-name">Kuwait Inv. Authority</div><div class="lp-sub">Kuwait · SWF</div></div></div></td><td><span class="badge badge-blue"><span class="badge-dot"></span>First Meeting</span></td><td class="mono">$250M</td><td style="color:var(--accent);font-weight:600;">35%</td><td class="muted">Jul 15, 2025</td><td class="muted">RB</td><td class="muted">Follow-up call</td></tr>
+                <tr><td><div class="lp-cell"><div class="avatar av-amber" style="width:28px;height:28px;font-size:10px;">YE</div><div class="lp-info"><div class="lp-name">Yale Endowment</div><div class="lp-sub">USA · Endowment</div></div></div></td><td><span class="badge badge-green"><span class="badge-dot"></span>Soft Circle</span></td><td class="mono">$50M</td><td style="color:var(--green);font-weight:600;">80%</td><td class="muted">May 28, 2025</td><td class="muted">NK</td><td class="muted">Docs preparation</td></tr>
+                <tr><td><div class="lp-cell"><div class="avatar av-red" style="width:28px;height:28px;font-size:10px;">SK</div><div class="lp-info"><div class="lp-name">Skandia Insurance</div><div class="lp-sub">Sweden · Insurance</div></div></div></td><td><span class="badge badge-gray"><span class="badge-dot"></span>Initial Intro</span></td><td class="mono">$75M</td><td style="color:var(--text3);font-weight:600;">20%</td><td class="muted">Aug 2025</td><td class="muted">LM</td><td class="muted">Send pitch deck</td></tr>
+                <tr><td><div class="lp-cell"><div class="avatar av-teal" style="width:28px;height:28px;font-size:10px;">AP</div><div class="lp-info"><div class="lp-name">AP3 Pension Fund</div><div class="lp-sub">Sweden · Pension</div></div></div></td><td><span class="badge badge-amber"><span class="badge-dot"></span>Due Diligence</span></td><td class="mono">$100M</td><td style="color:var(--amber);font-weight:600;">50%</td><td class="muted">Jun 30, 2025</td><td class="muted">RB</td><td class="muted">Reference checks</td></tr>
+                <tr><td><div class="lp-cell"><div class="avatar av-blue" style="width:28px;height:28px;font-size:10px;">GH</div><div class="lp-info"><div class="lp-name">GIC Singapore</div><div class="lp-sub">Singapore · SWF</div></div></div></td><td><span class="badge badge-blue"><span class="badge-dot"></span>First Meeting</span></td><td class="mono">$165M</td><td style="color:var(--accent);font-weight:600;">40%</td><td class="muted">Jul 30, 2025</td><td class="muted">NK</td><td class="muted">Manager presentation</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ VIEW: INTERACTIONS ══════ -->
+      <div class="view" id="view-interactions">
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--accent-lt);color:var(--accent);"><i class="ti ti-messages"></i></div>
+            <div class="kpi-label">Total Interactions</div>
+            <div class="kpi-value">284</div>
+            <div class="kpi-delta up"><i class="ti ti-trending-up"></i> +22 this month</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--green-lt);color:var(--green);"><i class="ti ti-phone"></i></div>
+            <div class="kpi-label">Calls (30d)</div>
+            <div class="kpi-value">41</div>
+            <div class="kpi-delta up"><i class="ti ti-trending-up"></i> +8 vs prior</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--amber-lt);color:var(--amber);"><i class="ti ti-mail"></i></div>
+            <div class="kpi-label">Emails (30d)</div>
+            <div class="kpi-value">117</div>
+            <div class="kpi-delta neutral">Avg 3.9/day</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--purple-lt);color:var(--purple);"><i class="ti ti-building"></i></div>
+            <div class="kpi-label">Meetings (30d)</div>
+            <div class="kpi-value">19</div>
+            <div class="kpi-delta dn"><i class="ti ti-trending-down"></i> −3 vs prior</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Interaction Log</span>
+            <div class="tab-row">
+              <button class="tab-btn active">All</button>
+              <button class="tab-btn">Calls</button>
+              <button class="tab-btn">Emails</button>
+              <button class="tab-btn">Meetings</button>
+            </div>
+            <button class="btn btn-primary" style="height:28px;font-size:11px;padding:0 10px;" onclick="showToast('Log entry added')"><i class="ti ti-plus"></i> Log Interaction</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Investor</th>
+                  <th>Summary</th>
+                  <th>IR Owner</th>
+                  <th>Date</th>
+                  <th>Next Step</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><span class="badge badge-blue"><i class="ti ti-phone" style="font-size:11px;"></i> Call</span></td><td class="muted">Ontario Teachers'</td><td>Q3 LP performance update call, 45 min</td><td class="muted">NK</td><td class="mono">May 13, 2025</td><td class="muted">Send written follow-up</td></tr>
+                <tr><td><span class="badge badge-amber"><i class="ti ti-mail" style="font-size:11px;"></i> Email</span></td><td class="muted">Abu Dhabi Inv. Auth.</td><td>Sent completed DDQ (38 pages)</td><td class="muted">NK</td><td class="mono">May 12, 2025</td><td class="muted">Await response 10 days</td></tr>
+                <tr><td><span class="badge badge-green"><i class="ti ti-building" style="font-size:11px;"></i> Meeting</span></td><td class="muted">CalPERS</td><td>On-site strategy review, Sacramento HQ</td><td class="muted">NK + RB</td><td class="mono">May 10, 2025</td><td class="muted">IC presentation May 20</td></tr>
+                <tr><td><span class="badge badge-purple"><i class="ti ti-chart-bar" style="font-size:11px;"></i> Update</span></td><td class="muted">Yale Endowment</td><td>Soft circle confirmed at $50M for Fund IV</td><td class="muted">NK</td><td class="mono">May 9, 2025</td><td class="muted">Docs within 5 days</td></tr>
+                <tr><td><span class="badge badge-green"><i class="ti ti-building" style="font-size:11px;"></i> Meeting</span></td><td class="muted">GIC Singapore</td><td>Video conference — manager introduction</td><td class="muted">RB</td><td class="mono">May 8, 2025</td><td class="muted">Schedule on-site visit</td></tr>
+                <tr><td><span class="badge badge-blue"><i class="ti ti-phone" style="font-size:11px;"></i> Call</span></td><td class="muted">Ontario Teachers'</td><td>Intro call with new CIO — 30 min</td><td class="muted">NK</td><td class="mono">May 7, 2025</td><td class="muted">Send track record deck</td></tr>
+                <tr><td><span class="badge badge-amber"><i class="ti ti-mail" style="font-size:11px;"></i> Email</span></td><td class="muted">Maple Future Fund</td><td>Term sheet draft circulated for review</td><td class="muted">NK</td><td class="mono">May 6, 2025</td><td class="muted">Response by May 15</td></tr>
+                <tr><td><span class="badge badge-green"><i class="ti ti-building" style="font-size:11px;"></i> Meeting</span></td><td class="muted">AP3 Pension Fund</td><td>Risk & compliance deep-dive, Stockholm</td><td class="muted">LM</td><td class="mono">May 5, 2025</td><td class="muted">Reference calls this week</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ VIEW: FUNDS ══════ -->
+      <div class="view" id="view-funds">
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--accent-lt);color:var(--accent);"><i class="ti ti-briefcase"></i></div>
+            <div class="kpi-label">Funds Under Mgmt</div>
+            <div class="kpi-value">4</div>
+            <div class="kpi-delta neutral">2 open, 2 closed</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--green-lt);color:var(--green);"><i class="ti ti-trending-up"></i></div>
+            <div class="kpi-label">Flagship Net IRR</div>
+            <div class="kpi-value">21.4%</div>
+            <div class="kpi-delta up"><i class="ti ti-trending-up"></i> Top quartile</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--amber-lt);color:var(--amber);"><i class="ti ti-coin"></i></div>
+            <div class="kpi-label">Capital Deployed</div>
+            <div class="kpi-value">$3.1B</div>
+            <div class="kpi-delta neutral">74% of commitment</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--purple-lt);color:var(--purple);"><i class="ti ti-calendar"></i></div>
+            <div class="kpi-label">Next Close</div>
+            <div class="kpi-value">Jun 30</div>
+            <div class="kpi-delta neutral">Fund IV target $1.5B</div>
+          </div>
+        </div>
+        <div class="fund-grid">
+          <div class="fund-card">
+            <div class="fund-name">Argent Capital Fund IV</div>
+            <div class="fund-strat">Global Macro · Long/Short Equity · Vintage 2024</div>
+            <div class="fund-stats">
+              <div><div class="fund-stat-label">Target Size</div><div class="fund-stat-val">$1.5B</div></div>
+              <div><div class="fund-stat-label">Committed</div><div class="fund-stat-val">$890M</div></div>
+              <div><div class="fund-stat-label">% Raised</div><div class="fund-stat-val" style="color:var(--green)">59%</div></div>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:59%"></div></div>
+            <div class="progress-label"><span>$0</span><span>Final close Jun 30, 2025</span><span>$1.5B</span></div>
+          </div>
+          <div class="fund-card">
+            <div class="fund-name">Argent Capital Fund III</div>
+            <div class="fund-strat">Global Macro · Long/Short Equity · Vintage 2021</div>
+            <div class="fund-stats">
+              <div><div class="fund-stat-label">Fund Size</div><div class="fund-stat-val">$1.2B</div></div>
+              <div><div class="fund-stat-label">Net IRR</div><div class="fund-stat-val" style="color:var(--green)">21.4%</div></div>
+              <div><div class="fund-stat-label">TVPI</div><div class="fund-stat-val">1.8×</div></div>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:100%;background:var(--green)"></div></div>
+            <div class="progress-label"><span>Fully closed</span><span>82 LPs</span><span>Realized</span></div>
+          </div>
+          <div class="fund-card">
+            <div class="fund-name">Argent Capital Fund II</div>
+            <div class="fund-strat">Event Driven · Credit · Vintage 2018</div>
+            <div class="fund-stats">
+              <div><div class="fund-stat-label">Fund Size</div><div class="fund-stat-val">$800M</div></div>
+              <div><div class="fund-stat-label">Net IRR</div><div class="fund-stat-val" style="color:var(--green)">18.7%</div></div>
+              <div><div class="fund-stat-label">TVPI</div><div class="fund-stat-val">2.1×</div></div>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:100%;background:var(--green)"></div></div>
+            <div class="progress-label"><span>Fully closed</span><span>61 LPs</span><span>Largely realized</span></div>
+          </div>
+          <div class="fund-card">
+            <div class="fund-name">Argent Special Opportunities</div>
+            <div class="fund-strat">Distressed Credit · Special Situations · Vintage 2023</div>
+            <div class="fund-stats">
+              <div><div class="fund-stat-label">Target Size</div><div class="fund-stat-val">$500M</div></div>
+              <div><div class="fund-stat-label">Committed</div><div class="fund-stat-val">$320M</div></div>
+              <div><div class="fund-stat-label">% Raised</div><div class="fund-stat-val" style="color:var(--amber)">64%</div></div>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:64%;background:var(--amber)"></div></div>
+            <div class="progress-label"><span>$0</span><span>Q4 2025 final close</span><span>$500M</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ VIEW: DOCUMENTS ══════ -->
+      <div class="view" id="view-documents">
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Document Vault</span>
+            <button class="btn btn-primary" style="height:28px;font-size:11px;padding:0 10px;" onclick="showToast('Upload dialog opened')"><i class="ti ti-upload"></i> Upload</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Document</th><th>Category</th><th>Fund</th><th>Version</th><th>Uploaded</th><th>Access</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><div style="display:flex;align-items:center;gap:8px;"><i class="ti ti-file-description" style="color:var(--accent);font-size:16px;"></i><span>Fund IV Private Placement Memorandum</span></div></td><td><span class="badge badge-blue">PPM</span></td><td class="muted">Fund IV</td><td class="mono">v3.2</td><td class="mono">May 1, 2025</td><td><span class="badge badge-green">LP + GP</span></td></tr>
+                <tr><td><div style="display:flex;align-items:center;gap:8px;"><i class="ti ti-file-spreadsheet" style="color:var(--green);font-size:16px;"></i><span>Q1 2025 Investor Letter</span></div></td><td><span class="badge badge-green">Report</span></td><td class="muted">All Funds</td><td class="mono">Final</td><td class="mono">Apr 15, 2025</td><td><span class="badge badge-green">All LPs</span></td></tr>
+                <tr><td><div style="display:flex;align-items:center;gap:8px;"><i class="ti ti-file-text" style="color:var(--amber);font-size:16px;"></i><span>Limited Partnership Agreement</span></div></td><td><span class="badge badge-amber">Legal</span></td><td class="muted">Fund IV</td><td class="mono">v2.0</td><td class="mono">Mar 20, 2025</td><td><span class="badge badge-amber">GP Only</span></td></tr>
+                <tr><td><div style="display:flex;align-items:center;gap:8px;"><i class="ti ti-file-analytics" style="color:var(--purple);font-size:16px;"></i><span>Fund IV Pitch Deck</span></div></td><td><span class="badge badge-purple">Marketing</span></td><td class="muted">Fund IV</td><td class="mono">v5.1</td><td class="mono">Mar 10, 2025</td><td><span class="badge badge-green">Prospects</span></td></tr>
+                <tr><td><div style="display:flex;align-items:center;gap:8px;"><i class="ti ti-file-description" style="color:var(--accent);font-size:16px;"></i><span>Due Diligence Questionnaire (DDQ)</span></div></td><td><span class="badge badge-blue">DD</span></td><td class="muted">All Funds</td><td class="mono">2025</td><td class="mono">Jan 5, 2025</td><td><span class="badge badge-green">Prospects</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ VIEW: ROADSHOWS ══════ -->
+      <div class="view" id="view-roadshows">
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Roadshow Calendar</span>
+            <button class="btn btn-primary" style="height:28px;font-size:11px;padding:0 10px;" onclick="showToast('New roadshow created')"><i class="ti ti-plus"></i> New Roadshow</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>City / Event</th><th>Date</th><th>Meetings</th><th>AUM Potential</th><th>IR Lead</th><th>Status</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><div class="lp-info"><div class="lp-name">New York City — LP Roadshow</div><div class="lp-sub">Four Seasons Midtown</div></div></td><td class="mono">May 19–21, 2025</td><td>12 meetings</td><td class="mono" style="color:var(--green);">$450M</td><td class="muted">NK</td><td><span class="badge badge-amber">Upcoming</span></td></tr>
+                <tr><td><div class="lp-info"><div class="lp-name">London — Pension Fund Summit</div><div class="lp-sub">Mandarin Oriental, Hyde Park</div></div></td><td class="mono">Jun 3–5, 2025</td><td>8 meetings</td><td class="mono" style="color:var(--green);">$280M</td><td class="muted">RB</td><td><span class="badge badge-amber">Upcoming</span></td></tr>
+                <tr><td><div class="lp-info"><div class="lp-name">Singapore — Asia LP Tour</div><div class="lp-sub">Raffles Hotel</div></div></td><td class="mono">Jun 16–18, 2025</td><td>10 meetings</td><td class="mono" style="color:var(--green);">$380M</td><td class="muted">NK + LM</td><td><span class="badge badge-blue">Planned</span></td></tr>
+                <tr><td><div class="lp-info"><div class="lp-name">Abu Dhabi — SWF Forum</div><div class="lp-sub">ADNEC Conference Centre</div></div></td><td class="mono">May 8, 2025</td><td>5 meetings</td><td class="mono">$200M</td><td class="muted">NK</td><td><span class="badge badge-green">Completed</span></td></tr>
+                <tr><td><div class="lp-info"><div class="lp-name">Stockholm — Nordic Pensions</div><div class="lp-sub">Grand Hôtel Stockholm</div></div></td><td class="mono">Apr 22–23, 2025</td><td>7 meetings</td><td class="mono">$175M</td><td class="muted">LM</td><td><span class="badge badge-green">Completed</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ VIEW: REPORTING ══════ -->
+      <div class="view" id="view-reporting">
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--accent-lt);color:var(--accent);"><i class="ti ti-report"></i></div>
+            <div class="kpi-label">Reports Sent YTD</div>
+            <div class="kpi-value">48</div>
+            <div class="kpi-delta up"><i class="ti ti-trending-up"></i> On schedule</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--green-lt);color:var(--green);"><i class="ti ti-users"></i></div>
+            <div class="kpi-label">Investor Portal Logins</div>
+            <div class="kpi-value">94%</div>
+            <div class="kpi-delta up">Past 30 days</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--amber-lt);color:var(--amber);"><i class="ti ti-clock"></i></div>
+            <div class="kpi-label">Next Report Due</div>
+            <div class="kpi-value">Jun 15</div>
+            <div class="kpi-delta neutral">Q2 LP Letter</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:var(--purple-lt);color:var(--purple);"><i class="ti ti-mail"></i></div>
+            <div class="kpi-label">Capital Calls (30d)</div>
+            <div class="kpi-value">3</div>
+            <div class="kpi-delta neutral">$94M total</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-title">Report Schedule</span><button class="btn btn-primary" style="height:28px;font-size:11px;padding:0 10px;" onclick="showToast('Report created')"><i class="ti ti-plus"></i> New Report</button></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Report</th><th>Frequency</th><th>Next Due</th><th>Recipients</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Quarterly Investor Letter</td><td class="muted">Quarterly</td><td class="mono">Jun 15, 2025</td><td class="muted">127 LPs</td><td><span class="badge badge-amber">In Preparation</span></td></tr>
+                <tr><td>Monthly NAV Report</td><td class="muted">Monthly</td><td class="mono">Jun 1, 2025</td><td class="muted">All LPs</td><td><span class="badge badge-blue">Scheduled</span></td></tr>
+                <tr><td>Annual Audited Financials</td><td class="muted">Annual</td><td class="mono">Mar 31, 2026</td><td class="muted">All LPs</td><td><span class="badge badge-green">On Track</span></td></tr>
+                <tr><td>Capital Call Notice — Fund IV</td><td class="muted">Ad hoc</td><td class="mono">May 20, 2025</td><td class="muted">89 LPs</td><td><span class="badge badge-amber">In Review</span></td></tr>
+                <tr><td>K-1 Tax Documents</td><td class="muted">Annual</td><td class="mono">Apr 15, 2026</td><td class="muted">All US LPs</td><td><span class="badge badge-green">On Track</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /shell -->
+
+<!-- ══════ LP DETAIL PANEL ══════ -->
+<div class="detail-overlay" id="detail-overlay" onclick="closeDetail(event)">
+  <div class="detail-panel" id="detail-panel">
+    <div class="detail-head">
+      <div class="avatar av-blue" style="width:44px;height:44px;font-size:15px;" id="dp-avatar">OT</div>
+      <div>
+        <div class="detail-name" id="dp-name">Ontario Teachers'</div>
+        <div class="detail-role" id="dp-role">Pension Fund · Canada</div>
+      </div>
+      <button class="detail-close" onclick="closeDetailBtn()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="detail-body">
+      <div class="detail-section-title">Overview</div>
+      <div class="detail-grid">
+        <div><div class="detail-field-label">AUM / Commitment</div><div class="detail-field-val" id="dp-aum">$220M</div></div>
+        <div><div class="detail-field-label">Status</div><div class="detail-field-val" id="dp-status">—</div></div>
+        <div><div class="detail-field-label">Investor Type</div><div class="detail-field-val" id="dp-type">Pension Fund</div></div>
+        <div><div class="detail-field-label">Tier</div><div class="detail-field-val" id="dp-tier">Tier 1</div></div>
+        <div><div class="detail-field-label">Primary Contact</div><div class="detail-field-val" id="dp-contact">—</div></div>
+        <div><div class="detail-field-label">IR Owner</div><div class="detail-field-val">Netanel K.</div></div>
+        <div><div class="detail-field-label">First Investment</div><div class="detail-field-val" id="dp-first">2019</div></div>
+        <div><div class="detail-field-label">Last Contact</div><div class="detail-field-val" id="dp-last">—</div></div>
+      </div>
+
+      <div class="detail-section-title">Interaction History</div>
+      <div id="dp-log">
+        <div class="detail-log-item">
+          <div class="log-icon"><i class="ti ti-phone"></i></div>
+          <div><div class="log-note">Q3 LP performance update — 45 min call with CIO</div><div class="log-meta">Call · NK · May 13, 2025</div></div>
+        </div>
+        <div class="detail-log-item">
+          <div class="log-icon"><i class="ti ti-mail"></i></div>
+          <div><div class="log-note">Sent Q1 2025 investor letter and audited financials</div><div class="log-meta">Email · NK · Apr 15, 2025</div></div>
+        </div>
+        <div class="detail-log-item">
+          <div class="log-icon"><i class="ti ti-building"></i></div>
+          <div><div class="log-note">Annual LP meeting — Toronto HQ, full team present</div><div class="log-meta">Meeting · NK + RB · Feb 20, 2025</div></div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;">
+        <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="showToast('Interaction logged'); closeDetailBtn()">
+          <i class="ti ti-plus"></i> Log Interaction
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ ADD LP MODAL ══════ -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <i class="ti ti-user-plus" style="font-size:18px;color:var(--accent);"></i>
+      <span class="modal-title">Add New Investor</span>
+      <button class="detail-close" onclick="closeModalBtn()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Organization Name *</label>
+          <input type="text" class="form-input" placeholder="e.g. Ontario Teachers'" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Investor Type *</label>
+          <select class="form-select">
+            <option>Pension Fund</option>
+            <option>Sovereign Wealth Fund</option>
+            <option>Endowment</option>
+            <option>Insurance</option>
+            <option>Family Office</option>
+            <option>Fund of Funds</option>
+            <option>UHNWI</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Primary Contact</label>
+          <input type="text" class="form-input" placeholder="Full name" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" placeholder="name@org.com" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Geography</label>
+          <select class="form-select">
+            <option>North America</option>
+            <option>Europe</option>
+            <option>Middle East</option>
+            <option>Asia Pacific</option>
+            <option>Latin America</option>
+            <option>Africa</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Target Commitment ($M)</label>
+          <input type="number" class="form-input" placeholder="e.g. 100" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Pipeline Stage</label>
+          <select class="form-select">
+            <option>Initial Intro</option>
+            <option>First Meeting</option>
+            <option>Due Diligence</option>
+            <option>Soft Circle</option>
+            <option>Active LP</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tier</label>
+          <select class="form-select">
+            <option>Tier 1</option>
+            <option>Tier 2</option>
+            <option>Tier 3</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group full" style="grid-column:1/-1;">
+        <label class="form-label">Notes</label>
+        <textarea class="form-input" rows="3" placeholder="Key context, investment preferences, constraints…" style="resize:vertical;"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModalBtn()">Cancel</button>
+      <button class="btn btn-primary" onclick="submitLP()"><i class="ti ti-check"></i> Add Investor</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ TOAST ══════ -->
+<div class="toast" id="toast"><i class="ti ti-circle-check"></i><span id="toast-msg">Done</span></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────
+const lpData = [
+  { initials:'OT', avClass:'av-green',  name:"Ontario Teachers' Pension",   sub:'Canada',       type:'Pension',         aum:'$220M', status:'Active',      geo:'North America', last:'May 13',  tier:'Tier 1' },
+  { initials:'AB', avClass:'av-blue',   name:'Abu Dhabi Inv. Authority',     sub:'UAE',          type:'SWF',             aum:'$180M', status:'Prospect',    geo:'Middle East',   last:'May 12',  tier:'Tier 1' },
+  { initials:'CP', avClass:'av-purple', name:'CalPERS',                      sub:'USA',          type:'Pension',         aum:'$150M', status:'Active',      geo:'North America', last:'May 10',  tier:'Tier 1' },
+  { initials:'YE', avClass:'av-amber',  name:'Yale Endowment',               sub:'USA',          type:'Endowment',       aum:'$50M',  status:'Soft Circle', geo:'North America', last:'May 9',   tier:'Tier 2' },
+  { initials:'GS', avClass:'av-teal',   name:'GIC Singapore',                sub:'Singapore',    type:'SWF',             aum:'$165M', status:'Prospect',    geo:'Asia Pacific',  last:'May 8',   tier:'Tier 1' },
+  { initials:'NZ', avClass:'av-blue',   name:'NZ Superannuation Fund',       sub:'New Zealand',  type:'SWF',             aum:'$100M', status:'Prospect',    geo:'Asia Pacific',  last:'May 6',   tier:'Tier 2' },
+  { initials:'AP', avClass:'av-red',    name:'AP3 Pension Fund',             sub:'Sweden',       type:'Pension',         aum:'$90M',  status:'Prospect',    geo:'Europe',        last:'May 5',   tier:'Tier 2' },
+  { initials:'MF', avClass:'av-green',  name:'Maple Future Fund',            sub:'Canada',       type:'Pension',         aum:'$150M', status:'Soft Circle', geo:'North America', last:'May 4',   tier:'Tier 2' },
+  { initials:'KI', avClass:'av-purple', name:'Kuwait Inv. Authority',        sub:'Kuwait',       type:'SWF',             aum:'$250M', status:'Prospect',    geo:'Middle East',   last:'Apr 29',  tier:'Tier 1' },
+  { initials:'HS', avClass:'av-amber',  name:'Harvard Management Co.',       sub:'USA',          type:'Endowment',       aum:'$75M',  status:'Active',      geo:'North America', last:'Apr 25',  tier:'Tier 2' },
+  { initials:'SK', avClass:'av-red',    name:'Skandia Insurance',            sub:'Sweden',       type:'Insurance',       aum:'$75M',  status:'Prospect',    geo:'Europe',        last:'Apr 22',  tier:'Tier 3' },
+  { initials:'PF', avClass:'av-teal',   name:'PGGM Investments',             sub:'Netherlands',  type:'Pension',         aum:'$130M', status:'Active',      geo:'Europe',        last:'Apr 20',  tier:'Tier 1' },
+  { initials:'BL', avClass:'av-blue',   name:'Bridgewater Family Office',    sub:'USA',          type:'Family Office',   aum:'$40M',  status:'Active',      geo:'North America', last:'Apr 18',  tier:'Tier 3' },
+  { initials:'TK', avClass:'av-green',  name:'Tokyo Mutual Life',            sub:'Japan',        type:'Insurance',       aum:'$60M',  status:'Active',      geo:'Asia Pacific',  last:'Apr 15',  tier:'Tier 2' },
+  { initials:'NL', avClass:'av-amber',  name:'Norges Bank Inv. Mgmt',        sub:'Norway',       type:'SWF',             aum:'$200M', status:'Active',      geo:'Europe',        last:'Apr 10',  tier:'Tier 1' },
+  { initials:'IN', avClass:'av-purple', name:'IPSF Nordic Fund',             sub:'Denmark',      type:'Pension',         aum:'$85M',  status:'Inactive',    geo:'Europe',        last:'Jan 10',  tier:'Tier 3' },
+];
+
+const statusBadge = {
+  'Active':      '<span class="badge badge-green"><span class="badge-dot"></span>Active</span>',
+  'Prospect':    '<span class="badge badge-blue"><span class="badge-dot"></span>Prospect</span>',
+  'Soft Circle': '<span class="badge badge-amber"><span class="badge-dot"></span>Soft Circle</span>',
+  'Inactive':    '<span class="badge badge-gray"><span class="badge-dot"></span>Inactive</span>',
+};
+const tierBadge = {
+  'Tier 1': '<span class="badge badge-purple">Tier 1</span>',
+  'Tier 2': '<span class="badge badge-gray">Tier 2</span>',
+  'Tier 3': '<span class="badge badge-gray" style="opacity:0.6">Tier 3</span>',
+};
+
+let currentFilter = 'all';
+let currentSearch  = '';
+let currentSort    = null;
+let sortAsc        = true;
+
+function renderTable() {
+  let data = [...lpData];
+  if (currentFilter !== 'all') data = data.filter(r => r.status === currentFilter);
+  if (currentSearch) {
+    const q = currentSearch.toLowerCase();
+    data = data.filter(r => r.name.toLowerCase().includes(q) || r.type.toLowerCase().includes(q) || r.geo.toLowerCase().includes(q));
+  }
+  if (currentSort) {
+    data.sort((a,b) => {
+      let av = a[currentSort], bv = b[currentSort];
+      if (currentSort === 'aum') { av = parseFloat(av.replace(/[$MB]/g,'')); bv = parseFloat(bv.replace(/[$MB]/g,'')); }
+      return sortAsc ? (av > bv ? 1 : -1) : (av < bv ? 1 : -1);
+    });
+  }
+  const tbody = document.getElementById('lp-tbody');
+  tbody.innerHTML = data.map((r,i) => `
+    <tr onclick="openDetail(${lpData.indexOf(r)})">
+      <td><div class="lp-cell"><div class="avatar ${r.avClass}" style="width:30px;height:30px;font-size:11px;">${r.initials}</div><div class="lp-info"><div class="lp-name">${r.name}</div><div class="lp-sub">${r.sub}</div></div></div></td>
+      <td class="muted">${r.type}</td>
+      <td class="mono">${r.aum}</td>
+      <td>${statusBadge[r.status]||''}</td>
+      <td class="muted">${r.geo}</td>
+      <td class="mono">${r.last}</td>
+      <td>${tierBadge[r.tier]||''}</td>
+    </tr>
+  `).join('');
+}
+
+function filterStatus(status, btn) {
+  currentFilter = status;
+  document.querySelectorAll('#lp-filter-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+
+function handleSearch(val) {
+  currentSearch = val;
+  renderTable();
+}
+
+function sortTable(col) {
+  if (currentSort === col) sortAsc = !sortAsc;
+  else { currentSort = col; sortAsc = true; }
+  renderTable();
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────
+const pageMeta = {
+  lps:          { title:'LP Directory',    sub:'127 investors · $4.2B AUM' },
+  pipeline:     { title:'Pipeline',        sub:'7 prospects · $890M potential' },
+  interactions: { title:'Interactions',    sub:'284 total interactions logged' },
+  funds:        { title:'Fund Overview',   sub:'4 funds · $4.2B AUM' },
+  documents:    { title:'Document Vault',  sub:'32 documents' },
+  roadshows:    { title:'Roadshows',       sub:'3 upcoming events' },
+  reporting:    { title:'Reporting',       sub:'Next due Jun 15' },
+};
+
+function navigate(viewId, navEl) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + viewId)?.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (navEl) navEl.classList.add('active');
+  const m = pageMeta[viewId] || {};
+  document.getElementById('page-title').textContent   = m.title   || viewId;
+  document.getElementById('page-subtitle').textContent= m.sub     || '';
+  const searchInput = document.getElementById('global-search');
+  searchInput.value = '';
+  currentSearch = '';
+}
+
+// ── DETAIL PANEL ──────────────────────────────────────────────
+function openDetail(idx) {
+  const r = lpData[idx];
+  document.getElementById('dp-avatar').className = 'avatar ' + r.avClass;
+  document.getElementById('dp-avatar').style.cssText = 'width:44px;height:44px;font-size:15px;';
+  document.getElementById('dp-avatar').textContent = r.initials;
+  document.getElementById('dp-name').textContent    = r.name;
+  document.getElementById('dp-role').textContent    = r.type + ' · ' + r.sub;
+  document.getElementById('dp-aum').textContent     = r.aum;
+  document.getElementById('dp-status').innerHTML    = statusBadge[r.status]||'';
+  document.getElementById('dp-type').textContent    = r.type;
+  document.getElementById('dp-tier').innerHTML      = tierBadge[r.tier]||'';
+  document.getElementById('dp-contact').textContent = 'Chief Investment Officer';
+  document.getElementById('dp-last').textContent    = r.last;
+  document.getElementById('dp-first').textContent   = '2019 — Fund I';
+  document.getElementById('detail-overlay').classList.add('open');
+}
+function closeDetail(e) { if (e.target === document.getElementById('detail-overlay')) closeDetailBtn(); }
+function closeDetailBtn() { document.getElementById('detail-overlay').classList.remove('open'); }
+
+// ── ADD LP MODAL ──────────────────────────────────────────────
+function openAddLP()  { document.getElementById('modal-overlay').classList.add('open'); }
+function closeModal(e){ if (e.target === document.getElementById('modal-overlay')) closeModalBtn(); }
+function closeModalBtn(){ document.getElementById('modal-overlay').classList.remove('open'); }
+function submitLP() {
+  closeModalBtn();
+  showToast('Investor added to directory');
+}
+
+// ── TOAST ─────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── THEME ─────────────────────────────────────────────────────
+let dark = true;
+function toggleTheme() {
+  dark = !dark;
+  document.documentElement.setAttribute('data-theme', dark ? '' : 'light');
+  document.getElementById('theme-icon').className = dark ? 'ti ti-sun' : 'ti ti-moon';
+}
+
+// ── EXPORT ────────────────────────────────────────────────────
+function exportCSV() {
+  const headers = ['Name','Type','Commitment','Status','Geography','Last Contact','Tier'];
+  const rows = lpData.map(r => [r.name, r.type, r.aum, r.status, r.geo, r.last, r.tier].join(','));
+  const blob = new Blob([headers.join(',') + '\n' + rows.join('\n')], { type:'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'argent_capital_lps.csv';
+  a.click();
+  showToast('CSV exported successfully');
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+renderTable();
+</script>
+</body>
+</html>
